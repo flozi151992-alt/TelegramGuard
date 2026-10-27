@@ -241,6 +241,7 @@ def is_hard_spam(text):
     AI call and defeats fullwidth / lookalike / zero-width / split-word evasion."""
     s, _ = score(text)
     return s >= getattr(config, "LEXICON_HARD_THRESHOLD", 6)
+   
 def matched_categories(text):
     """Категории всех совпавших слов: money, scam, contact, profanity, adult и т.д."""
     if not text:
