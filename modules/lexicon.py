@@ -241,3 +241,17 @@ def is_hard_spam(text):
     AI call and defeats fullwidth / lookalike / zero-width / split-word evasion."""
     s, _ = score(text)
     return s >= getattr(config, "LEXICON_HARD_THRESHOLD", 6)
+def matched_categories(text):
+    """Категории всех совпавших слов: money, scam, contact, profanity, adult и т.д."""
+    if not text:
+        return set()
+    raw = text.lower()
+    norm = normalize(text)
+    strip = strip_separators(norm)
+    table = dict(SLANG)
+    table.update(getattr(config, "LEXICON_EXTRA", None) or {})
+    cats = set()
+    for term, (_meaning, _weight, cat) in table.items():
+        if term in raw or term in norm or term in strip:
+            cats.add(cat)
+    return cats
